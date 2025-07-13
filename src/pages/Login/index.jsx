@@ -4,6 +4,8 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import { PageContainer } from '@ant-design/pro-components';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { API } from '../../services';
+import { Link } from 'react-router';
+import HomeLayout from '../../layouts/Home';
 export const LoginPage = () => {
 
     //-------------- State & Variables --------------//
@@ -33,7 +35,7 @@ export const LoginPage = () => {
     };
 
     return (
-        <PageContainer >
+        <HomeLayout title={'Login'}>
             <section className="w-full flex h-screen">
                 <div className=" sm:w-[400px] m-auto rounded-2xl sm:shadow-[0px_4px_20px_rgba(0,0,0,0.1)] p-7 ">
                     <div className=" mb-8">
@@ -42,6 +44,8 @@ export const LoginPage = () => {
                     </div>
 
                     <Form
+                        size='large'
+
                         form={form}
                         initialValues={{ remember: true }}
                         onFinish={onLogin}
@@ -56,7 +60,7 @@ export const LoginPage = () => {
                                 }
                             ]}
                         >
-                            <Input size="large" prefix={<MailOutlined />} placeholder="ID" />
+                            <Input prefix={<MailOutlined />} placeholder="ID" />
                         </Form.Item>
 
                         <Form.Item
@@ -68,24 +72,27 @@ export const LoginPage = () => {
                                 }
                             ]}
                         >
-                            <Input.Password size="large" prefix={<LockOutlined />} placeholder="Password" />
+                            <Input.Password prefix={<LockOutlined />} placeholder="Password" />
                         </Form.Item>
 
-                        <Form.Item>
+                        <div className='flex justify-between mb-4' >
                             <Form.Item name="remember" valuePropName="checked" noStyle>
                                 <Checkbox className="!font-semibold">Remember me</Checkbox>
                             </Form.Item>
-                        </Form.Item>
+                            <div>
+                                <Link to='/sign-up'>New Here?</Link>
+                            </div>
+                        </div>
 
                         <Form.Item className="mb-0">
-                            <Button size="large" block type="primary" htmlType="submit" loading={isLoading}>
+                            <Button block type="primary" htmlType="submit" loading={isLoading}>
                                 Login
                             </Button>
                         </Form.Item>
                     </Form>
                 </div>
             </section>
-        </PageContainer>
+        </HomeLayout>
     )
 }
 

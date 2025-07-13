@@ -14,7 +14,7 @@ export const AuthApi = {
      * @returns {json|null} json response or null.
     */
     Login: (data, toast_success = false, toast_loading = false) => {
-        const api_call = axiosApi.post('/api/login/', data);
+        const api_call = axiosApi.post('/quiz_app/login/', data);
         return responseHandler(api_call, toast_success, toast_loading);
     },
     /**
@@ -25,7 +25,7 @@ export const AuthApi = {
      * @returns {json|null} json response or null.
      */
     SignUp: (data, toast_success = false, toast_loading = false) => {
-        const api_call = axiosApi.post('/api/signup/', data);
+        const api_call = axiosApi.post('/quiz_app/signup/', data);
         return responseHandler(api_call, toast_success, toast_loading);
     },
     /**
@@ -36,7 +36,7 @@ export const AuthApi = {
      * */
 
     OtpVerification: (data, toast_success = false, toast_loading = false) => {
-        const api_call = axiosApi.post('/api/verify-otp/', data);
+        const api_call = axiosApi.post('/quiz_app/verify-otp/', data);
         return responseHandler(api_call, toast_success, toast_loading);
     },
     /**
@@ -47,7 +47,7 @@ export const AuthApi = {
      * */
 
     ResendOtp: (data, toast_success = false, toast_loading = false) => {
-        const api_call = axiosApi.post('/api/resend-otp/', data);
+        const api_call = axiosApi.post('/quiz_app/resend-otp/', data);
         return responseHandler(api_call, toast_success, toast_loading);
     }
 };

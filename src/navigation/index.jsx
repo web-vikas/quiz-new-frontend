@@ -9,7 +9,7 @@ let router = createBrowserRouter([
     Component: LoginPage,
   },
   {
-    path: "/signup",
+    path: "/sign-up",
     Component: SignUpPage,
   },
 ]);
