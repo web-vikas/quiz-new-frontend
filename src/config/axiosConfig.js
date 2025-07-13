@@ -54,7 +54,7 @@ export const responseHandler = async (api_call, toast_success, toast_loading) =>
         }
     }
 
-    if (response?.status === 200) {
+    if (response?.status === 200 || response?.status === 201) {
         return response.data;
     } else {
         let errorMessage = 'Something went wrong. Please contact admin.';

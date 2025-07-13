@@ -25,18 +25,29 @@ export const AuthApi = {
      * @returns {json|null} json response or null.
      */
     SignUp: (data, toast_success = false, toast_loading = false) => {
-        const api_call = axiosApi.post('/api/register/', data);
+        const api_call = axiosApi.post('/api/signup/', data);
         return responseHandler(api_call, toast_success, toast_loading);
     },
     /**
-     * Microsoft Auth API
+     * Otp verification  Auth API
      * @param {object} data object data.
      * @param {string|boolean} toast_success success message if provided. Default value false.
      * @param {string|boolean} toast_loading loading message if provided. Default value false.
      * */
 
-    MicrosoftAuth: (data, toast_success = false, toast_loading = false) => {
-        const api_call = axiosApi.post('/api/login-with-microsoft/', data);
+    OtpVerification: (data, toast_success = false, toast_loading = false) => {
+        const api_call = axiosApi.post('/api/verify-otp/', data);
+        return responseHandler(api_call, toast_success, toast_loading);
+    },
+    /**
+     * Resend otp  API
+     * @param {object} data object data.
+     * @param {string|boolean} toast_success success message if provided. Default value false.
+     * @param {string|boolean} toast_loading loading message if provided. Default value false.
+     * */
+
+    ResendOtp: (data, toast_success = false, toast_loading = false) => {
+        const api_call = axiosApi.post('/api/resend-otp/', data);
         return responseHandler(api_call, toast_success, toast_loading);
     }
 };
