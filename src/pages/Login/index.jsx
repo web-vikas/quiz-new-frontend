@@ -1,0 +1,91 @@
+import { useState } from 'react';
+import { useErrorLog } from '@/hooks';
+import { Button, Checkbox, Form, Input } from 'antd';
+import { PageContainer } from '@ant-design/pro-components';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { API } from '../../services';
+export const LoginPage = () => {
+
+    //-------------- State & Variables --------------//
+
+    const handleError = useErrorLog('pages/Login');
+    const [form] = Form.useForm();
+    const [isLoading, setIsLoading] = useState(false);
+
+
+    //-------------- Other Methods --------------//
+
+    const onLogin = async (values) => {
+        try {
+            const res = await API.Login(values, 'Login Success!', 'Authenticating...')
+            console.log(res, 'Login');
+
+            if (res) {
+                console.log(res);
+            }
+
+        } catch (error) {
+            handleError(error);
+            console.debug('[Login Error] : ', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <PageContainer >
+            <section className="w-full flex h-screen">
+                <div className=" sm:w-[400px] m-auto rounded-2xl sm:shadow-[0px_4px_20px_rgba(0,0,0,0.1)] p-7 ">
+                    <div className=" mb-8">
+                        <h1 className="text-center text-2xl font-bold">Tools</h1>
+                        <p className=" text-center text-xl mt-3 ">Welcome! Login in to your Account.</p>
+                    </div>
+
+                    <Form
+                        form={form}
+                        initialValues={{ remember: true }}
+                        onFinish={onLogin}
+                        layout="vertical"
+                    >
+                        <Form.Item
+                            name="email"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your ID!'
+                                }
+                            ]}
+                        >
+                            <Input size="large" prefix={<MailOutlined />} placeholder="ID" />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your Password!'
+                                }
+                            ]}
+                        >
+                            <Input.Password size="large" prefix={<LockOutlined />} placeholder="Password" />
+                        </Form.Item>
+
+                        <Form.Item>
+                            <Form.Item name="remember" valuePropName="checked" noStyle>
+                                <Checkbox className="!font-semibold">Remember me</Checkbox>
+                            </Form.Item>
+                        </Form.Item>
+
+                        <Form.Item className="mb-0">
+                            <Button size="large" block type="primary" htmlType="submit" loading={isLoading}>
+                                Login
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+            </section>
+        </PageContainer>
+    )
+}
+
