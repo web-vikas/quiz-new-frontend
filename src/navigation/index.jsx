@@ -1,13 +1,16 @@
-import { BrowserRouter, createBrowserRouter, RouterProvider } from "react-router";
-import * as Pages from '@pages'
-import Test from "./test";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import { LoginPage } from "../pages/Login";
+import { SignUpPage } from "../pages/SignUp";
 
 
 let router = createBrowserRouter([
   {
     path: "/",
     Component: LoginPage,
+  },
+  {
+    path: "/signup",
+    Component: SignUpPage,
   },
 ]);
 
