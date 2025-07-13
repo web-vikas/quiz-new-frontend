@@ -65,9 +65,9 @@ export const responseHandler = async (api_call, toast_success, toast_loading) =>
             errorTitle = 'Bad Request (400)';
             errorMessage = responseData?.error || 'The request could not be understood.';
         } else if (response?.status === 401) {
-            errorTitle = 'Unauthorized (401)';
-            errorMessage = responseData?.message ? responseData.message : 'You are not authorized to perform this action.';
-            window.location.href = '/';
+            errorTitle = 'Error';
+            errorMessage = responseData?.error ? responseData.error : 'You are not authorized to perform this action.';
+            // window.location.href = '/';
         } else if (response?.status === 403) {
             errorTitle = 'Forbidden (403)';
             errorMessage = 'You do not have permission to access this resource.';
