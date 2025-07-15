@@ -6,27 +6,29 @@ import {
     StepsForm,
 } from '@ant-design/pro-components';
 import { Button, Col, Input, Row, } from 'antd';
-import { useState } from 'react';
+import { ArrowRight, Check } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { API } from '../../services';
-import { indianStates, isValidPassword } from '../../util';
 import HomeLayout from '../../layouts/Home';
+import { API } from '../../services';
+import { conFarmPasswordValuate, indianStates, passwordValidate } from '../../util';
 
 export const SignUpPage = () => {
-
 
     //-------------- State & Variables --------------//
 
     const handleError = useErrorLog('pages/Login');
     const [isLoading, setIsLoading] = useState(false);
-    const [otpValue, setOtpValue] = useState('');
     const [userEmail, setUserEmail] = useState('');
+    const [countdown, setCountdown] = useState(0);
+    const [isResendDisabled, setIsResendDisabled] = useState(false);
     const navigation = useNavigate();
 
 
-    //-------------- Api call here --------------//
+    //-------------- Other Methods --------------//
 
     const onStep1Finish = async (data) => {
+        return true
         try {
             setIsLoading(true);
             const res = await API.SignUp(data, 'Otp Sent Successfully', 'Sending OTP...');
@@ -43,16 +45,14 @@ export const SignUpPage = () => {
     };
 
     const onStep2Finish = async (data) => {
-        console.log(data)
         try {
             setIsLoading(true);
             const res = await API.OtpVerification(
-                { email: userEmail, otp: otpValue },
+                { email: userEmail, otp: data.otp },
                 'OTP Verified Successfully',
                 'Verifying OTP...'
             );
             if (res) {
-
                 navigation('/');
             }
         } catch (error) {
@@ -64,38 +64,61 @@ export const SignUpPage = () => {
 
     const handleResendOtp = async () => {
         try {
-            await API.ResendOtp({ email: userEmail }, 'Otp send Successfully', 'Otp Sending');
+            const res = await API.ResendOtp({ email: userEmail }, 'Otp send Successfully', 'Otp Sending');
+            if (res) {
+                setIsResendDisabled(true);
+                setCountdown(60);
+            }
         } catch (error) {
             handleError(error);
         }
     }
 
 
-    //-------------- Custom components render --------------//
+    //-------------- Timeout Methods --------------//
+
+    useEffect(() => {
+        let timer;
+        if (countdown > 0) {
+            timer = setTimeout(() => {
+                setCountdown(countdown - 1);
+            }, 1000);
+        } else if (countdown === 0 && isResendDisabled) {
+            setIsResendDisabled(false);
+        }
+        return () => clearTimeout(timer);
+    }, [countdown, isResendDisabled]);
+
+
+
+    //-------------- Other Components --------------//
 
     const renderButtons = (props) => {
         if (props.step === 0) {
             return (
-                <Button type="primary" onClick={props.onSubmit} loading={isLoading} className="h-10">
-                    Continue to OTP →
-                </Button>
+                <div className="flex justify-center">
+                    <Button type="primary" size='large' onClick={props.onSubmit} loading={isLoading}>
+                        Continue to OTP <ArrowRight size={16} />
+                    </Button>
+                </div>
             );
         }
 
         return (
-            <div className="flex gap-4 items-center">
-                <Button onClick={props.onPre} size='large'>
-                    Go Back
-                </Button>
-                <Button
-                    type="primary"
-                    onClick={props.onSubmit}
-                    disabled={otpValue.length !== 6}
-                    loading={isLoading}
-                    className="h-10"
-                >
-                    Complete Signup ✓
-                </Button>
+            <div className="flex justify-center">
+                <div className="flex gap-4 items-center">
+                    <Button onClick={props.onPre} size='large'>
+                        Go Back
+                    </Button>
+                    <Button
+                        type="primary"
+                        onClick={props.onSubmit}
+                        loading={isLoading}
+                        size='large'
+                    >
+                        Complete Signup <Check size={16} />
+                    </Button>
+                </div>
             </div>
         );
     };
@@ -121,7 +144,6 @@ export const SignUpPage = () => {
                                             { required: true, message: 'Full name is required' },
                                             { min: 2, message: 'Name must be at least 2 characters' }
                                         ]}
-                                        fieldProps={{ className: "rounded-lg" }}
                                     />
                                 </Col>
                                 <Col span={12}>
@@ -133,7 +155,6 @@ export const SignUpPage = () => {
                                             { required: true, message: 'Email is required' },
                                             { type: 'email', message: 'Please Enter a valid email' }
                                         ]}
-
                                     />
                                 </Col>
                                 <Col span={12}>
@@ -143,9 +164,8 @@ export const SignUpPage = () => {
                                         placeholder="Enter 10-digit mobile number"
                                         rules={[
                                             { required: true, message: 'Phone number is required' },
-                                            // { type: 'number', message: 'Enter Valid Phone' }
+                                            { pattern: /^[0-9]{10}$/, message: 'Enter valid 10-digit phone number' }
                                         ]}
-
                                     />
                                 </Col>
                                 <Col span={12}>
@@ -182,15 +202,9 @@ export const SignUpPage = () => {
                                         rules={[
                                             { required: true, message: 'Password is required' },
                                             {
-                                                validator: (_, value) => {
-                                                    if (!value || isValidPassword(value)) {
-                                                        return Promise.resolve();
-                                                    }
-                                                    return Promise.reject(new Error('Password must be at least 8 characters with uppercase, lowercase, and number'));
-                                                }
+                                                validator: passwordValidate
                                             }
                                         ]}
-
                                     />
                                 </Col>
                                 <Col span={12}>
@@ -200,19 +214,8 @@ export const SignUpPage = () => {
                                         placeholder="Re-enter your password"
                                         rules={[
                                             { required: true, message: 'Please confirm your password' },
-                                            ({ getFieldValue }) => ({
-                                                validator(_, value) {
-                                                    if (!value || getFieldValue('password') === value) {
-                                                        return Promise.resolve();
-                                                    }
-                                                    return Promise.reject(new Error('Passwords do not match'));
-                                                },
-                                            }),
+                                            conFarmPasswordValuate
                                         ]}
-                                        fieldProps={{
-                                            visibilityToggle: true,
-                                            className: "rounded-lg"
-                                        }}
                                     />
                                 </Col>
                             </Row>
@@ -223,17 +226,32 @@ export const SignUpPage = () => {
                             title="OTP Verification"
                             onFinish={onStep2Finish}
                         >
-
-                            <Input.OTP value={otpValue} onChange={(e) => setOtpValue(e.target.value)} />
-
-                            <div className="text-center mt-4">
-                                <Button
-                                    type="link"
-                                    onClick={handleResendOtp}
-                                    className="text-blue-600 hover:text-blue-800"
+                            <div className="text-center py-8">
+                                <p className="mb-4 text-gray-600">
+                                    We've sent a 6-digit OTP to {userEmail}
+                                </p>
+                                <ProFormText
+                                    name="otp"
+                                    rules={[
+                                        { required: true, message: 'Please enter OTP' },
+                                        { len: 6, message: 'OTP must be 6 digits' }
+                                    ]}
                                 >
-                                    Didn't receive OTP? Resend
-                                </Button>
+                                    <Input.OTP length={6} size="large" />
+                                </ProFormText>
+                                <div className="mt-6">
+                                    <Button
+                                        type="link"
+                                        onClick={handleResendOtp}
+                                        disabled={isResendDisabled}
+                                        className="text-blue-600 hover:text-blue-800 disabled:text-gray-400"
+                                    >
+                                        {isResendDisabled
+                                            ? `Resend OTP in ${countdown}s`
+                                            : "Didn't receive OTP? Resend"
+                                        }
+                                    </Button>
+                                </div>
                             </div>
                         </StepsForm.StepForm>
                     </StepsForm>
