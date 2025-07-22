@@ -1,10 +1,5 @@
 import {
-    GithubFilled,
-    InfoCircleFilled,
-    LogoutOutlined,
-    PlusCircleFilled,
-    QuestionCircleFilled,
-    SearchOutlined
+    LogoutOutlined
 } from '@ant-design/icons';
 import {
     ProConfigProvider,
@@ -12,61 +7,15 @@ import {
 } from '@ant-design/pro-components';
 import {
     ConfigProvider,
-    Dropdown,
-    Input,
-    theme
+    Dropdown
 } from 'antd';
-import { useState } from 'react';
-import { PageWrapper } from './PageWrapper';
-import path from './path';
 import { Link, useLocation } from 'react-router';
-
-
-const SearchInput = () => {
-    const { token } = theme.useToken();
-    return (
-        <div
-            key="SearchOutlined"
-            aria-hidden
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginInlineEnd: 24,
-            }}
-            onMouseDown={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-            }}
-        >
-            <Input
-                style={{
-                    borderRadius: 4,
-                    marginInlineEnd: 12,
-                    backgroundColor: token.colorBgTextHover,
-                }}
-                prefix={
-                    <SearchOutlined
-                        style={{
-                            color: token.colorTextLightSolid,
-                        }}
-                    />
-                }
-                placeholder="搜索方案"
-                variant="borderless"
-            />
-            <PlusCircleFilled
-                style={{
-                    color: token.colorPrimary,
-                    fontSize: 24,
-                }}
-            />
-        </div>
-    );
-};
+import path from './path';
 
 export const DashboardWarper = ({ children }) => {
     const location = useLocation();
     const pathname = location.pathname;
+
 
     if (typeof document === 'undefined') {
         return <div />;
@@ -165,7 +114,7 @@ export const DashboardWarper = ({ children }) => {
 
                     >
                         {/* <PageWrapper> */}
-                            {children}
+                        {children}
                         {/* </PageWrapper> */}
                     </ProLayout>
                 </ConfigProvider>

@@ -34,5 +34,41 @@ export const QuizApi = {
         });
         return responseHandler(api_call, toast_success, toast_loading);
     },
+    AddQuestion: async (id, data, toast_success = false, toast_loading = false) => {
+        const token = await getAccessToken()
+        const api_call = axiosApi.post(`/quiz-app/quiz/${id}/questions/add/`, data, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return responseHandler(api_call, toast_success, toast_loading);
+    },
+    GetAllQuestion: async (id, toast_success = false, toast_loading = false) => {
+        const token = await getAccessToken()
+        const api_call = axiosApi.get(`/quiz-app/quiz/${id}/questions/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return responseHandler(api_call, toast_success, toast_loading);
+    },
+    DeleteQuestion: async (id, toast_success = false, toast_loading = false) => {
+        const token = await getAccessToken()
+        const api_call = axiosApi.delete(`/quiz-app/quiz-question/delete/${id}/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return responseHandler(api_call, toast_success, toast_loading);
+    },
+    UpdateQuestion: async (id, data, toast_success = false, toast_loading = false) => {
+        const token = await getAccessToken()
+        const api_call = axiosApi.put(`/quiz-app/quiz-question/update/${id}/`, data, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return responseHandler(api_call, toast_success, toast_loading);
+    },
 
 };

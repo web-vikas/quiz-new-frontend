@@ -1,53 +1,35 @@
-import React, { useState } from 'react';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, Modal, Space } from 'antd';
-const LocalizedModal = () => {
-  const [open, setOpen] = useState(false);
-  const showModal = () => {
-    setOpen(true);
-  };
-  const hideModal = () => {
-    setOpen(false);
-  };
-  return (
-    <>
-      <Button type="primary" onClick={showModal}>
-        Modal
-      </Button>
-      <Modal
-        title="Modal"
-        open={open}
-        onOk={hideModal}
-        onCancel={hideModal}
-        okText="确认"
-        cancelText="取消"
-      >
-        <p>Bla bla ...</p>
-        <p>Bla bla ...</p>
-        <p>Bla bla ...</p>
-      </Modal>
-    </>
-  );
-};
-const App = () => {
-  const [modal, contextHolder] = Modal.useModal();
-  const confirm = () => {
-    modal.confirm({
-      title: 'Confirm',
+import { Button, Modal } from 'antd';
+
+const { confirm } = Modal;
+
+const DeleteModel = ({
+  title = 'Are you sure?',
+  content = 'This action cannot be undone.',
+  okText = 'Yes',
+  cancelText = 'No',
+  onConfirm = () => { },
+  danger = false
+}) => {
+  const showConfirm = () => {
+    confirm({
+      title,
       icon: <ExclamationCircleOutlined />,
-      content: 'Bla bla ...',
-      okText: '确认',
-      cancelText: '取消',
+      content,
+      okText,
+      cancelText,
+      okButtonProps: { danger },
+      onOk: onConfirm,
     });
   };
+
   return (
     <>
-      <Space>
-        <LocalizedModal />
-        <Button onClick={confirm}>Confirm</Button>
-      </Space>
-      {contextHolder}
+      <Button danger onClick={showConfirm}>
+        {title}
+      </Button>
     </>
   );
 };
-export default App;
+
+export default DeleteModel;

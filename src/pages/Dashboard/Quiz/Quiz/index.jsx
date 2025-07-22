@@ -2,10 +2,11 @@ import { Button, Card, Space, Table, Typography } from "antd"
 import { DashboardWarper } from "../../../../layouts/Dashboard"
 import { useEffect, useState } from "react"
 import { QuizModel } from "./_components/quizModel"
-import { Plus, SquarePen, Trash } from "lucide-react";
+import { Eye, Plus, SquarePen, Trash } from "lucide-react";
 import { ProCard, ProFormGroup, ProFormSwitch } from "@ant-design/pro-components";
 import { API } from "../../../../services";
 import { useErrorLog } from '@/hooks';
+import { useNavigate } from "react-router";
 
 
 
@@ -19,6 +20,7 @@ const Quiz = () => {
     const [quizData, setQuizData] = useState([])
     const [currentQuiz, setCurrentQuiz] = useState(null)
     const handleError = useErrorLog('quiz/quizManagement');
+    const navigation = useNavigate()
 
 
 
@@ -96,6 +98,9 @@ const Quiz = () => {
                                         </Button>
                                         <Button type="link" onClick={() => { seIsModelOpen(true), setIsEdit(true), setCurrentQuiz(item) }} >
                                             <SquarePen color="red" size={18} />
+                                        </Button>
+                                        <Button type="link" onClick={() => navigation(`/quiz/quiz/quiz-details?id=${item.quiz_id}`)} >
+                                            <Eye size={18} color="red" />
                                         </Button>
                                     </Space>
                                 }

@@ -4,6 +4,7 @@ import { SignUpPage } from "../pages/SignUp";
 import Dashboard from "../pages/Dashboard";
 import quiz from "../pages/Dashboard/Quiz/Quiz";
 import Quiz from "../pages/Dashboard/Quiz/Quiz";
+import { QuizDetails } from "../pages/Dashboard/Quiz/Quiz/QuizDetails";
 
 
 let router = createBrowserRouter([
@@ -26,6 +27,10 @@ let router = createBrowserRouter([
   {
     path: "/quiz/quiz",
     Component: Quiz,
+  },
+  {
+    path: "/quiz/quiz/quiz-details",
+    Component: QuizDetails,
   },
 ]);
 
