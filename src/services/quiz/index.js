@@ -70,5 +70,32 @@ export const QuizApi = {
         });
         return responseHandler(api_call, toast_success, toast_loading);
     },
+    AddPreQuestion: async (id, data, toast_success = false, toast_loading = false) => {
+        const token = await getAccessToken()
+        const api_call = axiosApi.post(`/quiz-app/quiz/${id}/pre-quiz-questions/add/`, data, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return responseHandler(api_call, toast_success, toast_loading);
+    },
+    getPreQuestion: async (id, toast_success = false, toast_loading = false) => {
+        const token = await getAccessToken()
+        const api_call = axiosApi.get(`/quiz-app/quiz/${id}/pre-quiz-questions/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return responseHandler(api_call, toast_success, toast_loading);
+    },
+    DeletePreQuestion: async (id, toast_success = false, toast_loading = false) => {
+        const token = await getAccessToken()
+        const api_call = axiosApi.delete(`/quiz-app/quiz/pre-quiz-questions/${id}/delete/`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return responseHandler(api_call, toast_success, toast_loading);
+    },
 
 };

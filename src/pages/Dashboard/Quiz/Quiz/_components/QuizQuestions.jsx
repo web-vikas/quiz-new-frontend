@@ -9,6 +9,9 @@ import DeleteModel from "./deleteModel";
 const { Option } = Select;
 
 export const QuizQuestions = ({ id }) => {
+
+
+  
   //========================States====================
   const [form] = Form.useForm();
   const [isAddQuestionModalOpen, setAddQuestionModalOpen] = useState(false);
@@ -58,6 +61,7 @@ export const QuizQuestions = ({ id }) => {
   }
 
 
+  //=================Use Effect ===========================
 
   useEffect(() => {
     getQuestions()
