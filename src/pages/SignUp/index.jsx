@@ -28,7 +28,6 @@ export const SignUpPage = () => {
     //-------------- Other Methods --------------//
 
     const onStep1Finish = async (data) => {
-        return true
         try {
             setIsLoading(true);
             const res = await API.SignUp(data, 'Otp Sent Successfully', 'Sending OTP...');

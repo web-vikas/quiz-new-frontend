@@ -1,11 +1,12 @@
-import { useState } from 'react';
 import { useErrorLog } from '@/hooks';
-import { Button, Checkbox, Form, Input } from 'antd';
-import { PageContainer } from '@ant-design/pro-components';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import { API } from '../../services';
-import { Link } from 'react-router';
+import { Button, Checkbox, Form, Input } from 'antd';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router';
 import HomeLayout from '../../layouts/Home';
+import { API } from '../../services';
+import { login } from '../../providers/redux/action';
 export const LoginPage = () => {
 
     //-------------- State & Variables --------------//
@@ -13,6 +14,8 @@ export const LoginPage = () => {
     const handleError = useErrorLog('pages/Login');
     const [form] = Form.useForm();
     const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
 
     //-------------- Other Methods --------------//
@@ -20,12 +23,11 @@ export const LoginPage = () => {
     const onLogin = async (values) => {
         try {
             const res = await API.Login(values, 'Login Success!', 'Authenticating...')
-            console.log(res, 'Login');
-
-            if (res) {
+            if (res?.access) {
+                dispatch(login(res))
+                navigate('/dashboard')
                 console.log(res);
             }
-
         } catch (error) {
             handleError(error);
             console.debug('[Login Error] : ', error);

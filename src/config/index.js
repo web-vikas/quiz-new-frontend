@@ -7,3 +7,4 @@
 
 export * from './environmentVariable';
 export * from './axiosConfig';
+export * from './localStorageConfig';

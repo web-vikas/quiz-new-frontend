@@ -164,9 +164,9 @@ export const DashboardWarper = ({ children }) => {
                         }}
 
                     >
-                        <PageWrapper>
+                        {/* <PageWrapper> */}
                             {children}
-                        </PageWrapper>
+                        {/* </PageWrapper> */}
                     </ProLayout>
                 </ConfigProvider>
             </ProConfigProvider>
